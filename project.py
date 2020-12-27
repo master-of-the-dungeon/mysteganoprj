@@ -1,5 +1,12 @@
 from PIL import Image, ImageOps
 import wave, math, array, argparse, sys, timeit
+from tkinter import Tk, Label
+
+def createUI():
+    root = Tk()
+    lb = Label(root, text="Hello world", font="arial 32")
+    lb.pack()
+    root.mainloop()
 
 def parser():
     parser = argparse.ArgumentParser()
@@ -90,5 +97,6 @@ def genwave(frequency, amplitude, samples, samplerate):
     return a
 
 if __name__ == '__main__':
-    inpt = parser()
-    convert(*inpt)
+    #inpt = parser()
+    #convert(*inpt)
+    createUI()
