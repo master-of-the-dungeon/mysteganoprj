@@ -1,62 +1,38 @@
 from PIL import Image, ImageOps
 import wave, math, array, argparse, sys, timeit
-from tkinter import Tk, Label, Entry, Button, END, FALSE
+from tkinter import Tk, Label, Entry, Button, END
 
 def createUI():
     root = Tk()
     root.title("Здесь могла быть ваша реклама")
     root.geometry("825x375")
-    root.resizable(False, FALSE)
+    root.resizable(False, False)
 
-    infile_label = Label(root, text="Имя входного файла", font="arial 24")
-    infile_label.grid(row=0, column=0, sticky="w", padx=25)
+    ui_table = [
+        ["Имя входного файла", "Здесь могла быть ваша релкама"],
+        ["Имя выходного фалйа", "out.wav"],
+        ["Нижний порог частот", "200"],
+        ["Верхний порог частот", "200000"],
+        ["Пикселей в секунду", "30"],
+        ["Частота дискретизации", "44100"]
+    ]
 
-    infile_entry = Entry(root, font="arial 24", fg="grey")
-    infile_entry.insert(END, "Здесь могла быть ваша реклама")
-    infile_entry.grid(row=0, column=1, padx=25)
+    entries = []
+    
+    for row, info in enumerate(ui_table):
+        Label(root, text=info[0], font="arial 24").grid(row=row, padx=25, sticky="w")
 
-    outfile_label = Label(root, text="Имя выходного файла", font="arial 24")
-    outfile_label.grid(row=1, column=0, sticky="w", padx=25)
-
-    outfile_entry = Entry(root, font="arial 24", fg="grey")
-    outfile_entry.insert(END, "out.wav")
-    outfile_entry.grid(row=1, column=1, padx=25)
-
-    minfreq_label = Label(root, text="Нижний порог частот", font="arial 24")
-    minfreq_label.grid(row=2, column=0, sticky="w", padx=25)
-
-    minfreq_entry = Entry(root, font="arial 24", fg="grey")
-    minfreq_entry.insert(END, 200)
-    minfreq_entry.grid(row=2, column=1, padx=25)
-
-    maxfreq_label = Label(root, text="Верхний порог частот", font="arial 24")
-    maxfreq_label.grid(row=3, column=0, sticky="w", padx=25)
-
-    maxfreq_entry = Entry(root, font="arial 24", fg="grey")
-    maxfreq_entry.insert(END, 200000)
-    maxfreq_entry.grid(row=3, column=1, padx=25)
-
-    pixels_label = Label(root, text="Пикселей в секунду", font="arial 24")
-    pixels_label.grid(row=4, column=0, sticky="w", padx=25)
-
-    pixels_entry = Entry(root, font="arial 24", fg="grey")
-    pixels_entry.insert(END, 30)
-    pixels_entry.grid(row=4, column=1, padx=25)
-
-    sampling_label = Label(root, text="Частота дискретизации", font="arial 24")
-    sampling_label.grid(row=5, column=0, sticky="w", padx=25)
-
-    sampling_entry = Entry(root, font="arial 24", fg="grey")
-    sampling_entry.insert(END, 44100)
-    sampling_entry.grid(row=5, column=1, padx=25)
+        entries.append(Entry(root, font="arial 24", fg="grey"))
+        entries[-1].grid(row=row, column=1, padx=25)
+        entries[-1].insert(END, info[1])
 
     convert_button = Button(root, text="Конвертировать", font="arial 32", command=lambda: convert(
-        infile_entry.get(),
-        outfile_entry.get(),
-        int(minfreq_entry.get()),
-        int(maxfreq_entry.get()),
-        int(pixels_entry.get()),
-        int(sampling_entry.get()))
+        entries[0].get(),
+        entries[1].get(),
+        int(entries[2].get()),
+        int(entries[3].get()),
+        int(entries[4].get()),
+        int(entries[5].get()))
     )
     convert_button.grid(row=6, column=0, columnspan=2, pady=20)
 
