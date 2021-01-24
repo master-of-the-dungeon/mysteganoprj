@@ -1,11 +1,11 @@
 from PIL import Image, ImageOps
 import wave, math, array, argparse, sys, timeit
 from tkinter import Tk, Label, Entry, Button, END
+from math import floor
 
 def createUI():
     root = Tk()
     root.title("Здесь могла быть ваша реклама")
-    root.geometry("825x375")
     root.resizable(False, False)
 
     ui_table = [
@@ -20,7 +20,8 @@ def createUI():
     entries = []
     
     for row, info in enumerate(ui_table):
-        Label(root, text=info[0], font="arial 24").grid(row=row, padx=25, sticky="w")
+        label = Label(root, text=info[0], font="arial 24")
+        label.grid(row=row, padx=25, sticky="w")
 
         entries.append(Entry(root, font="arial 24", fg="grey"))
         entries[-1].grid(row=row, column=1, padx=25)
@@ -75,6 +76,14 @@ def parser():
     return (args.INPUT, name, minfreq, maxfreq, pxs, wavrate)
 
 def convert(inpt, name, minfreq, maxfreq, pxs, wavrate):
+
+    # Tkinter
+    root = Tk()
+    root.title("Прогресс")
+
+    progress_label = Label(root, text="Прогресс", font="arial 24")
+    progress_label.pack()
+
     img = Image.open(inpt).convert('L')
     name = wave.open(name, 'w')
     name.setparams((1, 2, wavrate, 0, 'NONE', 'not compressed'))
@@ -107,10 +116,14 @@ def convert(inpt, name, minfreq, maxfreq, pxs, wavrate):
                     else:
                       data[i + x * fpx] = -32768
 
-        sys.stdout.write("Преобразование в процессе, осталось: %d%%   \r" % (float(x) / img.size[0]*100) )
-        sys.stdout.flush()
+        # sys.stdout.write("Преобразование в процессе, осталось: %d%%   \r" % (float(x) / img.size[0]*100) )
+        # sys.stdout.flush()
 
-    name.writeframes(data.tostring())
+        progress_label.configure(text=f"Преобразование в процессе, осталось: {floor(float(x) / img.size[0] * 10000) / 100}")
+        root.update()
+
+    # Pylint говорил, что в data нет метода .tostring()
+    name.writeframes(data)
     name.close()
 
     tms = timeit.default_timer()
