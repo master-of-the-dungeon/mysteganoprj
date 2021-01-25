@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
 from PIL import Image, ImageOps
 import wave, math, array, argparse, sys, timeit
 from tkinter import Tk, Label, Entry, Button, END
