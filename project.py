@@ -130,7 +130,7 @@ def convert(inpt, name, minfreq, maxfreq, pxs, wavrate):
 
     tms = timeit.default_timer()
 
-    progress_label.configure(text=f"Преобразование в процессе, осталось: 100%")
+    progress_label.configure(text=f"преобразование успешно завершено")
     root.destroy()
     print("Преобразование в процессе, осталось: 100%")
     print("Успешно завершено за %d секунд." % int(tms-tm))
